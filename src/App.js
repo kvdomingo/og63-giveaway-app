@@ -1,24 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react";
+import { MDBContainer as Container } from "mdbreact";
+import "./App.css";
+import EntryForm from "./components/EntryForm";
+import GiveawayDescription from "./components/GiveawayDescription";
+import ParticipantsList from "./components/ParticipantsList";
+import Loading from "./shared/Loading";
+import api from "./utils/Endpoints";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  const [giveaway, setGiveaway] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getData();
+    setLoading(false);
+  }, []);
+
+  function getData() {
+    api.data
+      .giveaway()
+      .then(res => setGiveaway(res.data))
+      .catch(err => console.log(err.message));
+  }
+
+  return loading ? (
+    <Loading />
+  ) : (
+    <Container className="py-5">
+      <GiveawayDescription data={giveaway} />
+      <EntryForm data={giveaway} getData={getData} />
+      <ParticipantsList data={giveaway.participants} />
+    </Container>
   );
 }
 
