@@ -2,27 +2,28 @@ import { MDBTypography as Type } from "mdbreact";
 import PropTypes from "prop-types";
 
 function GiveawayDescription({ data }) {
-  const date = new Date(data.end).toLocaleString();
-
   return (
     <>
-      <Type tag="h1" variant="h1-responsive">
+      <Type tag="h1" variant="h1-responsive" className="pb-4">
         {data.name}
       </Type>
       <p>
-        <b>Prize</b> {data.prize}
+        <b>Prize:</b> {data.prize}
       </p>
       <p>
-        <b>Winners</b> {data.winners}
+        <b>Winners:</b> {data.num_winners}
       </p>
       <p>
-        <b>Eligibility</b> {data.eligibility}
+        <b>Eligibility:</b> {data.eligibility}
       </p>
       <p>
-        <b>Rules</b> {data.rules}
+        <b>Rules:</b> {data.rules}
       </p>
       <p>
-        <b>End</b> {date}
+        <b>Start:</b> {new Date(data.start).toLocaleString()}
+      </p>
+      <p>
+        <b>End:</b> {new Date(data.end).toLocaleString()}
       </p>
     </>
   );

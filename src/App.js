@@ -3,33 +3,50 @@ import { MDBContainer as Container } from "mdbreact";
 import "./App.css";
 import EntryForm from "./components/EntryForm";
 import GiveawayDescription from "./components/GiveawayDescription";
-import ParticipantsList from "./components/ParticipantsList";
 import Loading from "./shared/Loading";
 import api from "./utils/Endpoints";
+import Draw from "./components/Draw";
+import WinnersList from "./components/WinnersList";
 
 function App() {
   const [giveaway, setGiveaway] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [winners, setWinners] = useState([]);
+  const [giveawayLoading, setGiveawayLoading] = useState(true);
+  const [winnersLoading, setWinnersLoading] = useState(true);
 
   useEffect(() => {
     getData();
-    setLoading(false);
+    getWinners();
   }, []);
 
   function getData() {
     api.data
       .giveaway()
-      .then(res => setGiveaway(res.data))
-      .catch(err => console.log(err.message));
+      .then(res => {
+        setGiveaway(res.data);
+      })
+      .catch(err => console.log(err.message))
+      .finally(() => setGiveawayLoading(false));
   }
 
-  return loading ? (
+  function getWinners() {
+    api.data
+      .winner()
+      .then(res => {
+        setWinners(res.data);
+      })
+      .catch(err => console.log(err.message))
+      .finally(() => setWinnersLoading(false));
+  }
+
+  return giveawayLoading || winnersLoading ? (
     <Loading />
   ) : (
     <Container className="py-5">
       <GiveawayDescription data={giveaway} />
       <EntryForm data={giveaway} getData={getData} />
-      <ParticipantsList data={giveaway.participants} />
+      {!!winners.length && <WinnersList winners={winners} />}
+      <Draw data={giveaway} getWinners={getWinners} />
     </Container>
   );
 }
