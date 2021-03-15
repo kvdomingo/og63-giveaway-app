@@ -46,7 +46,7 @@ function App() {
       <GiveawayDescription data={giveaway} />
       <EntryForm data={giveaway} getData={getData} />
       {!!winners.length && <WinnersList winners={winners} />}
-      <Draw data={giveaway} getWinners={getWinners} />
+      <Draw data={giveaway} getWinners={getWinners} winnersDrawn={winners.length > 0} />
     </Container>
   );
 }

@@ -82,11 +82,7 @@ function EntryForm({ data, getData }) {
           <div className="invalid-feedback">Invalid Discord username, must follow the format: John#1234</div>
           {!!errorMessage ? <small className="text-danger">{errorMessage}</small> : null}
         </div>
-        <button
-          type="submit"
-          className={`btn ${outsideTime ? "btn-grey" : "btn-indigo"} ml-0`}
-          disabled={loading || outsideTime || errorMessage}
-        >
+        <button type="submit" className="btn btn-indigo ml-0" disabled={loading || outsideTime || errorMessage}>
           {loading ? <div className="spinner-border" role="status" /> : "Enter"}
         </button>
         <ListGroup className="mt-4">

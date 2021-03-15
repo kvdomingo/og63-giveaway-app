@@ -3,13 +3,14 @@ import api from "../utils/Endpoints";
 import DrawParticipants from "./DrawParticipants";
 import PropTypes from "prop-types";
 
-function Draw({ data, getWinners }) {
+function Draw({ data, getWinners, winnersDrawn }) {
   const [loading, setLoading] = useState(false);
   const [isValidToken, setIsValidToken] = useState(false);
   const [participantsList, setParticipantsList] = useState({});
   const [inputToken, setInputToken] = useState("");
   const [token, setToken] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [tokenAttempt, setTokenAttempt] = useState(0);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -21,13 +22,19 @@ function Draw({ data, getWinners }) {
         setParticipantsList(res.data.participantsList);
         setIsValidToken(res.data.isValidToken);
         setToken(inputToken);
+        setTokenAttempt(0);
       })
       .catch(err => {
         err = { ...err };
         setIsValidToken(false);
         setToken("");
         setParticipantsList({});
-        setErrorMessage(err.response.data.error);
+        if (tokenAttempt + 1 === 3) {
+          setErrorMessage("Maximum token attempts exceeded.");
+        } else {
+          setErrorMessage(err.response.data.error);
+        }
+        setTokenAttempt(tokenAttempt + 1);
       })
       .finally(() => {
         setInputToken("");
@@ -51,17 +58,23 @@ function Draw({ data, getWinners }) {
             value={inputToken}
             name="token"
             onChange={handleChange}
-            disabled={isValidToken}
+            disabled={isValidToken || tokenAttempt === 3}
             required
           />
           {errorMessage && <small className="text-danger">{errorMessage}</small>}
         </div>
-        <button type="submit" className="btn btn-indigo ml-0" disabled={isValidToken}>
+        <button type="submit" className="btn btn-indigo ml-0" disabled={isValidToken || tokenAttempt === 3}>
           {loading ? <div className="spinner-border" role="status" /> : "Submit"}
         </button>
       </form>
       {isValidToken && (
-        <DrawParticipants data={data} participants={participantsList} token={token} getWinners={getWinners} />
+        <DrawParticipants
+          data={data}
+          participants={participantsList}
+          token={token}
+          getWinners={getWinners}
+          winnersDrawn={winnersDrawn}
+        />
       )}
     </>
   );
@@ -70,6 +83,7 @@ function Draw({ data, getWinners }) {
 Draw.propTypes = {
   data: PropTypes.object.isRequired,
   getWinners: PropTypes.func.isRequired,
+  winnersDrawn: PropTypes.bool.isRequired,
 };
 
 export default Draw;
