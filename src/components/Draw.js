@@ -2,6 +2,7 @@ import { useState } from "react";
 import api from "../utils/Endpoints";
 import DrawParticipants from "./DrawParticipants";
 import PropTypes from "prop-types";
+import { MDBTypography as Type } from "mdbreact";
 
 function Draw({ data, getWinners, winnersDrawn }) {
   const [loading, setLoading] = useState(false);
@@ -50,6 +51,9 @@ function Draw({ data, getWinners, winnersDrawn }) {
     <>
       <form className="border p-4 my-4 form" onSubmit={handleSubmit}>
         <div className="pb-3">
+          <Type tag="h3" variant="h5-responsive" className="text-uppercase mb-4">
+            <b>Admin/Mod section</b>
+          </Type>
           <label htmlFor="token">Draw token</label>
           <input
             id="token"
