@@ -7,7 +7,7 @@ console.log(NODE_ENV);
 
 const baseURL =
   NODE_ENV === "development"
-    ? "http://127.0.0.1:8000/v1.0/"
+    ? "http://localhost:8000/v1.0/"
     : "https://squad-giveaway-api-o2564skiua-de.a.run.app/v1.0/";
 
 const axiosInstance = axios.create({ baseURL });

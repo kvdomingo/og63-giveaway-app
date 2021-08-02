@@ -2,11 +2,10 @@ FROM node:14-slim
 
 WORKDIR /app
 
-RUN npm install -g serve
-
 COPY package.json .
 COPY package-lock.json .
 
+RUN npm install -g serve
 RUN npm install
 
 COPY . .
