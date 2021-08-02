@@ -1,9 +1,12 @@
 import axios from "axios";
+import Pizzly from "pizzly-js";
 
-// const { NODE_ENV } = process.env;
+const { NODE_ENV } = process.env;
 
-const baseURL = "https://og63-giveaway-api.herokuapp.com/v1.0/";
-// NODE_ENV === "development" ? "http://127.0.0.1:8000/v1.0/" : "https://og63-giveaway-api.herokuapp.com/v1.0/";
+const baseURL =
+  NODE_ENV === "development"
+    ? "http://127.0.0.1:8000/v1.0/"
+    : "https://squad-giveaway-api-o2564skiua-de.a.run.app/v1.0/";
 
 const axiosInstance = axios.create({ baseURL });
 
@@ -27,4 +30,10 @@ const api = {
   },
 };
 
+const pizzly = new Pizzly({ host: "https://pizzly-central.herokuapp.com" });
+
+const auth = pizzly.integration("discord");
+
 export default api;
+
+export { auth };
