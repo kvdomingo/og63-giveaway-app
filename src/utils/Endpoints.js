@@ -1,7 +1,9 @@
 import axios from "axios";
 import Pizzly from "pizzly-js";
 
-const { NODE_ENV } = process.env;
+const { NODE_ENV } = process.env || "production";
+
+console.log(NODE_ENV);
 
 const baseURL =
   NODE_ENV === "development"
